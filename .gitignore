@@ -31,6 +31,21 @@ node_modules/
 /node_modules
 jspm_packages
 
+.DS_Store
+*.pyc
+.extract
+*.log
+*.jar
+.vagrant
+node_modules
+.grunt
+build
+logs
+.idea
+
+
+
+
 # Optional npm cache directory
 .npm
 
