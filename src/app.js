@@ -4,3 +4,6 @@ const buzzer = require('./buzzer');
 const motion = require('./motion');
 
 /* Application logic goes here and re-use separate modules */
+
+// magnetic.magneticSensorCollector();
+camera.start();
