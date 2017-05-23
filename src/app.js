@@ -14,3 +14,8 @@ magnetic.magneticSensorCollector(MAGNETIC_PIN);
 
 //read temp sensor on GPIO 17
 temperature.temperatureSensor();
+
+
+//TODO: read motion sensor, after refactoring code in motion directory.
+//const PIR_PIN = 12;
+//motion.pirMotionSensor(12);
