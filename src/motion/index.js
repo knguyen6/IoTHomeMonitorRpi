@@ -2,7 +2,7 @@
 
 const Gpio = require('onoff').Gpio;
 
-let sensor = new Gpio(4, 'in');
+let sensor = new Gpio(17, 'in');
 
 sensor.watch((err, value) => {
   console.log(`err: ${err}`);
