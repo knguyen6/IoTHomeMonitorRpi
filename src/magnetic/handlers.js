@@ -5,8 +5,16 @@ exports.readInput = function(pin) {
     gpio.read(pin, function(err, value) {
       if (err)
         console.log('Error reading sensor: ', err);
-      else
-        console.log('The value is ' + value);
+      else 
+	translate(value);
+
     });
   };
 };
+
+
+function translate(value){
+    if (value) console.log('Door Open, sensor value = ', value);
+    else console.log('Door Close, sensor value = ', value);
+
+}

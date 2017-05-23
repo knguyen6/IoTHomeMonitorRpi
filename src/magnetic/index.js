@@ -1,6 +1,6 @@
 const gpio = require('rpi-gpio');
 const handlers = require('./handlers');
-const pin = 23;
+
 
 exports.magneticSensorCollector = function(pin) {
 
