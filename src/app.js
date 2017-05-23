@@ -5,5 +5,7 @@ const motion = require('./motion');
 
 /* Application logic goes here and re-use separate modules */
 
-// magnetic.magneticSensorCollector();
-camera.start();
+//on pin 23
+var magneticPin = 23;
+magnetic.magneticSensorCollector(magneticPin);
+//camera.start();
