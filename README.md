@@ -6,3 +6,16 @@
 /___/\____/_/    /_/ /_/\____/_/ /_/ /_/\___/  /_/  /_/\____/_/ /_/_/\__/\____/_/     
                                                                                       
 ```
+
+
+Setup the project: 
+
+```
+git clone https://github.com/knguyen6/IoTHomeMonitorRpi.git
+cd IoTHomeMonitorRpi 
+```
+Then install all dependencies:
+```
+npm install 
+```
+To run the app and see sensor data stream, go to `src` folder and run: `node app.js`
