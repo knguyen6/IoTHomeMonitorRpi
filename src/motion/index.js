@@ -1,27 +1,73 @@
-var gpio = require('rpi-gpio');
+// =================================================================================
+// Using rpi-gpio
+// var gpio = require('rpi-gpio');
 
-//TODO: refactor this module, put code that collect data into handlers.js
-var handlers = require('./handlers');
+// function init(pin) {
+// 	gpio.setMode(gpio.MODE_RPI);
+// 	gpio.setup(pin, gpio.DIR_IN, gpio.EDGE_BOTH);
 
-const MOTION_PIN = 12;
+// 	console.log('=========');
+// 	console.log(gpio);
+// 	console.log('=========');
+// }
+
+// // TODO extract this out into handlers.js
+// function detect(action) {
+// 	gpio.on('change', action);
+// }
+
+// module.exports = {
+// 	init: init,
+// 	detect: detect
+// };
 
 
-gpio.setMode(gpio.MODE_RPI)
-gpio.setup(MOTION_PIN, gpio.DIR_IN, readInput)
+// =================================================================================
+// Using Johnny five and raspi-io
+// const Raspi = require('raspi-io');
+// const Five = require('johnny-five');
+// const Board = new Five.Board({
+// 	io: new Raspi()
+// });
 
-function readInput() {
-    console.log('===== start collecting data from PIR motion sensor =====');
-   
-    setInterval(function(){
+// function init() {
+// 	Board.on('ready', () => {
+// 		console.log('board is ready');
 
-        gpio.read(MOTION_PIN, function(error, value) {
-	    if (error) console.log('Error getting data', error);
-	    else 
-                 if (value)
-                       console.log('motion detected');
-        })//gpio.read
+// 		// Create a new `motion` hardware instance.
+// 		let motion = new Five.Motion(4); //pin 7 (GPIO 4)
 
-    }, 500);        
+// 		motion.on('calibrated', () => {
+// 			console.log('calibrated');
+// 		});
 
+// 		motion.on('motionstart', () => {
+// 			console.log('motionstart');
+// 		});
+
+// 		motion.on('motionend', () => {
+// 			console.log('motionend');
+// 		});
+
+// 	});
+// }
+
+// module.exports = {
+// 	init: init
+// };
+// =================================================================================
+
+const Gpio = require('onoff').Gpio;
+
+function init(gpioPin) {
+	return new Gpio(gpioPin, 'in', 'both');
 }
+
+module.exports = {
+	init: init
+}
+
+
+
+
 
