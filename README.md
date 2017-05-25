@@ -18,4 +18,7 @@ Then install all dependencies:
 ```
 npm install 
 ```
-To run the app and see sensor data stream, go to `src` folder and run: `node app.js`
+Run the app:
+```
+npm start
+```
