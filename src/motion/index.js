@@ -1,3 +1,13 @@
+const Gpio = require('onoff').Gpio;
+
+function init(gpioPin) {
+	return new Gpio(gpioPin, 'in', 'both');
+}
+
+module.exports = {
+	init: init
+};
+
 // =================================================================================
 // Using rpi-gpio
 // var gpio = require('rpi-gpio');
@@ -56,13 +66,3 @@
 // 	init: init
 // };
 // =================================================================================
-
-const Gpio = require('onoff').Gpio;
-
-function init(gpioPin) {
-	return new Gpio(gpioPin, 'in', 'both');
-}
-
-module.exports = {
-	init: init
-}
