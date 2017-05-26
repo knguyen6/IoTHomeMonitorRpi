@@ -63,11 +63,6 @@ function init(gpioPin) {
 	return new Gpio(gpioPin, 'in', 'both');
 }
 
-function detect(callback) {
-	sensor.watch(callback);
-}
-
 module.exports = {
-	init: init,
-	detect: detect
+	init: init
 }

@@ -20,10 +20,14 @@ const PINS = require('./pins');
 // temperature.temperatureSensor();
 
 //Read motion sensor, after refactoring code in motion directory.
-// let sensor = motion.init(PINS['motion'].gpio);
-// sensor.detect((err, value) => {
-// 	console.log('=========');
-// 	console.log(`err: ${err}`);
-// 	console.log(`value: ${value}`);
-// 	console.log('=========');
-// });
+let pirSensor = motion.init(PINS['motion'].gpio);
+pirSensor.watch((err, value) => {
+	if (value) {
+		let timeNow = new Date().toLocaleString();
+		console.log('=========');
+		console.log('movement detected - ${timeNow}');
+		console.log('camera recording...');
+		console.log('=========');
+		camera.start();
+	}
+});
