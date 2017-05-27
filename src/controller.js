@@ -26,7 +26,7 @@ function onCameraDetect(err, value) {
 		console.log(`movement detected - ${timenow}`);
 
 		camera['photo'].start();
-		camera['photo'].on('read', (err, filename) => {
+		camera['photo'].on('read', (err, timestamp) => {
 			let location = camera['photo'].get('output');
 			camera['photo'].stop();
 
