@@ -6,6 +6,14 @@ const Aws = require('aws-sdk');
 const camera = require('./camera');
 const S3 = new Aws.S3();
 
+function onDeviceConnected(err, data) {
+	if (err) {
+		throw err;
+	} else {
+		console.log('iot-home-monitor successfully connected to AWS IoT Device Gateway');
+	}
+}
+
 function onCameraDetect(err, value) {
 	console.log('===========');
 	console.log(`err ${err}`);
@@ -45,5 +53,6 @@ function onCameraDetect(err, value) {
 }
 
 module.exports = {
-	onCameraDetect: onCameraDetect
+	onCameraDetect: onCameraDetect,
+	onDeviceConnected: onDeviceConnected
 };

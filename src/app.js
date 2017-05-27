@@ -12,30 +12,25 @@ const buzzer = require('./buzzer');
 const gpio = require('onoff').Gpio;
 const temperature = require('./temperature');
 
+/* Initialize function handlers */
+const rPiController = require('./controller');
+
+/* Pin settings */
+const pins = require('./pins'); // ex) PINS.motion['gpio']
+
 /* Instantiate modules */
 const DEVICE = IoT.device(require('./credentials'));
 const S3 = new Aws.S3();
 
-const HANDLERS = require('./handlers');
-const pins = require('./pins'); // ex) PINS.motion['gpio']
+/********************AWS IoT Connection Test********************/
+DEVICE.on('connect', rPiController['onDeviceConnected']);
 
-/* Application logic goes here and re-use separate modules */
+/********************Application logic********************/
 
 // magnetic.magneticSensorCollector(PINS['motion'].gpio);
 
-//read temp sensor on GPIO 17
+// read temp sensor on GPIO 17
 // temperature.temperatureSensor();
 
 let pirSensor = new gpio(pins.motion['gpio'], 'in', 'both');
-pirSensor.watch(HANDLERS['onCameraDetect']);
-
-/********************AWS IoT Connection Test********************/
-// DEVICE.on('connect', (err, data) => {
-// 	console.log(`err ${err}`);
-// 	console.log(`data ${data}`);
-// 	if (err) {
-// 		throw err;
-// 	} else {
-// 		console.log('connected');
-// 	}
-// });
+pirSensor.watch(rPiController['onCameraDetect']);
