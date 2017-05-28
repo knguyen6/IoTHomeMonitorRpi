@@ -18,6 +18,10 @@ Then install all dependencies:
 ```
 npm install 
 ```
+Main application is in /src/app.js
+```
+cd src
+```
 Run the app:
 ```
 npm start
