@@ -4,7 +4,11 @@ const fs = require('fs');
 const Aws = require('aws-sdk');
 
 const camera = require('./camera');
+const buzzer = require('./buzzer');
+
 const S3 = new Aws.S3();
+
+buzzer.buzzerOff();//always off
 
 function onDeviceConnected(err, data) {
 	if (err) throw err;
@@ -46,7 +50,23 @@ function onCameraDetect(err, value) {
 	}
 }
 
+function detectMotion(err, data){
+    if (err)
+	console.log('Unable to collect data from motion sensor: ', err);
+    else {
+   	if (data){
+    	    console.log('------- motion detected ------->', data);
+	    buzzer.buzzerOn();
+	    //TODO: right now, wait after 10s then turn off buzzer
+	    //TODO: implement turning off by user
+	    setTimeout(function(){ buzzer.buzzerOff(); }, 10000);
+	}
+	    
+    }
+}
+
 module.exports = {
 	onCameraDetect: onCameraDetect,
-	onDeviceConnected: onDeviceConnected
+	onDeviceConnected: onDeviceConnected,
+	detectMotion: detectMotion
 };

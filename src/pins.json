@@ -1,6 +1,5 @@
 {
 	"motion": {
-		"pin": 12,
 		"gpio": 18
 	},
 	"buzzer": {
@@ -12,7 +11,7 @@
 		"gpio": 23
 	},
 	"temperature": {
-		"pin": 11,
+		"sensorType":11,
 		"gpio": 17
 	}
 }

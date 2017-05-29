@@ -1,9 +1,9 @@
 const handlers = require('./handlers');
 
-exports.temperatureSensor = function() {
+exports.temperatureSensor = function(pin, sensorType) {
     console.log('===== start temperature and humidity sensor =====');
     setInterval(function() {
-        handlers.readSensor(function(error, data){
+        handlers.readSensor(pin, sensorType, function(error, data){
 	    if (error)
         	console.log(error);
     	    else {

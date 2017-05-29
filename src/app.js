@@ -6,9 +6,9 @@ const Aws = require('aws-sdk');
 const IoT = require('aws-iot-device-sdk');
 
 /* Hardware module dependencies */
-const camera = require('./camera');
+//const camera = require('./camera');
 const magnetic = require('./magnetic');
-const buzzer = require('./buzzer');
+//const buzzer = require('./buzzer');
 const gpio = require('onoff').Gpio;
 const temperature = require('./temperature');
 
@@ -19,18 +19,23 @@ const rPiController = require('./controller');
 const pins = require('./pins'); // ex) PINS.motion['gpio']
 
 /* Instantiate modules */
-const DEVICE = IoT.device(require('./credentials'));
-const S3 = new Aws.S3();
+//const DEVICE = IoT.device(require('./credentials'));
+//const S3 = new Aws.S3();
 
 /********************AWS IoT Connection Test********************/
-DEVICE.on('connect', rPiController['onDeviceConnected']);
+//DEVICE.on('connect', rPiController['onDeviceConnected']);
 
 /********************Application logic********************/
 
-// magnetic.magneticSensorCollector(PINS['motion'].gpio);
+//Magnetic Door Sensor: 
+ magnetic.magneticSensorCollector(pins.magnetic['gpio']);
 
 // read temp sensor on GPIO 17
-// temperature.temperatureSensor();
+ temperature.temperatureSensor(pins.temperature['gpio'], pins.temperature['sensorType']);
 
-let pirSensor = new gpio(pins.motion['gpio'], 'in', 'both');
-pirSensor.watch(rPiController['onCameraDetect']);
+//motion sensor:
+//let pirSensor = new gpio(pins.motion['gpio'], 'in', 'both');
+//pirSensor.watch(rPiController['detectMotion']);
+
+
+//pirSensor.watch(rPiController['onCameraDetect']);
