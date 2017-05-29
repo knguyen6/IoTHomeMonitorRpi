@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./src/app.js"
   },
-  "author": "",
+  "author": "knguyen6",
+  "contributors": [
+    "Inno Irving Estrera <innoirvinge@gmail.com> (irving09)"
+  ],
   "license": "ISC",
   "dependencies": {
+    "aws-iot-device-sdk": "^1.0.14",
     "aws-sdk": "^2.58.0",
     "johnny-five": "^0.10.13",
     "node-dht-sensor": "0.0.32",
