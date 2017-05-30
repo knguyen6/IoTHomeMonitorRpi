@@ -28,4 +28,4 @@ const pins = require('./pins'); // ex) PINS.motion['gpio']
 // pirSensor.watch(rPiController['onCameraDetect']);
 
 /********************Stream Camera********************/
-// camera['stream'].start();
+camera['stream'].start();

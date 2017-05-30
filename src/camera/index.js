@@ -30,7 +30,7 @@ const photo = new RaspiCam({
 });
 
 // TODO Change this URL to the EC2 server
-const SOCKET_SERVER_URL 	= 'http://192.168.1.14:3000';
+const SOCKET_SERVER_URL 	= 'http://ec2-52-34-34-51.us-west-2.compute.amazonaws.com:3000/';
 const MESSAGE_TOPIC 			= 'iot-home-intruder';
 
 function startStream() {
