@@ -34,8 +34,8 @@ const pins = require('./pins'); // ex) PINS.motion['gpio']
  temperature.temperatureSensor(pins.temperature['gpio'], pins.temperature['sensorType']);
 
 //motion sensor:
-//let pirSensor = new gpio(pins.motion['gpio'], 'in', 'both');
-//pirSensor.watch(rPiController['detectMotion']);
+let pirSensor = new gpio(pins.motion['gpio'], 'in', 'both');
+pirSensor.watch(rPiController['detectMotion']);
 
 
 //pirSensor.watch(rPiController['onCameraDetect']);
