@@ -3,10 +3,9 @@ const IoT   = require('aws-iot-device-sdk');
 const gpio  = require('onoff').Gpio;
 
 /* Hardware module dependencies */
-// const camera = require('./camera');
+//const camera = require('./camera');
 const magnetic = require('./magnetic');
-const camera  = require('./camera');
-const buzzer = require('./buzzer');
+//const buzzer = require('./buzzer');
 const temperature = require('./temperature');
 
 /* Pin settings */
@@ -22,10 +21,10 @@ const pins = require('./pins'); // ex) PINS.motion['gpio']
 // magnetic.magneticSensorCollector(PINS['motion'].gpio);
 
 // read temp sensor on GPIO 17
-// temperature.temperatureSensor();
+// temperature.temperatureSensor(pins.temperature['gpio'], pins.temperature['sensorType']);
 
 // let pirSensor = new gpio(pins.motion['gpio'], 'in', 'both');
 // pirSensor.watch(rPiController['onCameraDetect']);
 
 /********************Stream Camera********************/
-camera['stream'].start();
+// camera['stream'].start();
