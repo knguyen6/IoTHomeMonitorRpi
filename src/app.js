@@ -20,10 +20,6 @@ Device.on('connect', (err, data) => {
 
   /********************Application logic********************/
 
-  // if (motionDetected) {
-    Device.publish(MESSAGE_TOPIC, `Intruder detected. Live stream can be viewed here: ${LIVE_STREAM_URL}`);
-  //}
-
   // magnetic.magneticSensorCollector(PINS['motion'].gpio);
 
   // read temp sensor on GPIO 17
@@ -39,6 +35,7 @@ Device.on('connect', (err, data) => {
     console.log('PIR motion sensor running...');
     if (value) {
       console.log('PIR motion detected a movement');
+      Device.publish(MESSAGE_TOPIC, `Intruder detected. Live stream can be viewed here: ${LIVE_STREAM_URL}`);
     }
   });
 
