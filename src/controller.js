@@ -33,25 +33,25 @@ function onPirMotionSensorDetect(iotDeviceModule) {
 			console.log('PIR motion detected a movement');
 			iotDeviceModule.publish(Utils.messageTopic, `Intruder detected. Live stream can be viewed here: ${Utils.liveStreamUrl}`);
 
-			Camera['photo'].start();
-			Camera['photo'].on('read', (err, timestamp) => {
+			Camera['s3Photo'].start();
+			Camera['s3Photo'].on('read', (err, timestamp, fileName) => {
 				Utils.ifErrThrow(err, 'Failed to take a photo snapshot!');
-				let location = Camera['photo'].get('output');   
-        Camera['photo'].stop();
 
-        fs.readFile(location, (err, fileData) => {
-        	Utils.ifErrThrow(err, 'Failed to read file data for photo!');
-        	let s3Options = {    
-            Bucket: Utils.s3Bucket,
-            Key: 'intruder.png',    
-            Body: fileData    
-          };
+        if (fileName[fileName.length - 1] !== '~') {
+          fs.readFile(`${Utils.photoLocation}/${fileName}`, (err, fileData) => {
+           Utils.ifErrThrow(err, 'Failed to read file data for s3Photo!');
+           let s3Options = {    
+              Bucket: Utils.s3Bucket,
+              Key: fileName,    
+              Body: fileData    
+            };
 
-          S3.putObject(s3Options, (err, s3Data) => {
-          	Utils.ifErrThrow(err, 'Photo upload to S3 failed!');
-          	console.log(`Successfully uploaded photo to S3 ${s3Data.ETag}`);
+            S3.putObject(s3Options, (err, s3Data) => {
+             Utils.ifErrThrow(err, 'Photo upload to S3 failed!');
+             console.log(`Successfully uploaded photo to S3 ${s3Data.ETag}`);
+            });
           });
-        });
+        }
 			});
 		}
 	}
