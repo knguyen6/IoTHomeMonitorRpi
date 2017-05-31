@@ -6,7 +6,7 @@ const Spawn 		= require('child_process').spawn;
 const fs 	  		= require('fs');
 
 const Handlers 	= require('./handlers');
-const Utils 		= require('./utils');
+const Utils 		= require('../utils');
 
 const video = new RaspiCam({
   mode: 'video',
