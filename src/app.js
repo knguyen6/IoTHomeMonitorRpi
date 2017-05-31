@@ -3,28 +3,34 @@ const IoT   = require('aws-iot-device-sdk');
 const gpio  = require('onoff').Gpio;
 
 /* Hardware module dependencies */
-//const camera = require('./camera');
 const magnetic = require('./magnetic');
 //const buzzer = require('./buzzer');
 const temperature = require('./temperature');
 
-/* Pin settings */
+/* Instantiate device and pin settings */
+const Device = IoT.device(require('./credentials'));
 const pins = require('./pins'); // ex) PINS.motion['gpio']
 
-/* Instantiate modules */
-// const Device = IoT.device(require('./credentials'));
+const MESSAGE_TOPIC = 'iot-home-monitor';
+const LIVE_STREAM_URL = 'http://ec2-52-34-34-51.us-west-2.compute.amazonaws.com:8081';
 
-/********************AWS IoT Connection Test********************/
-// Device.on('connect', rPiController['onDeviceConnected']);
+Device.on('connect', (err, data) => {
+  if (err) throw err;
+  console.log('iot-home-monitor successfully connected to AWS IoT Device Gateway');
 
-/********************Application logic********************/
-// magnetic.magneticSensorCollector(PINS['motion'].gpio);
+  /********************Application logic********************/
 
-// read temp sensor on GPIO 17
-// temperature.temperatureSensor(pins.temperature['gpio'], pins.temperature['sensorType']);
+  // if (motionDetected) {
+    Device.publish(MESSAGE_TOPIC, `Intruder detected. Live stream can be viewed here: ${LIVE_STREAM_URL}`);
+  //}
 
-// let pirSensor = new gpio(pins.motion['gpio'], 'in', 'both');
-// pirSensor.watch(rPiController['onCameraDetect']);
+  // magnetic.magneticSensorCollector(PINS['motion'].gpio);
 
-/********************Stream Camera********************/
-// camera['stream'].start();
+  // read temp sensor on GPIO 17
+  // temperature.temperatureSensor(pins.temperature['gpio'], pins.temperature['sensorType']);
+
+  // let pirSensor = new gpio(pins.motion['gpio'], 'in', 'both');
+  // pirSensor.watch(rPiController['onCameraDetect']);
+
+  return console.log('attempted to publish');
+});
