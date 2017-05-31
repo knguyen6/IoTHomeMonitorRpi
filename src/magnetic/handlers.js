@@ -5,10 +5,10 @@ exports.readInput = function(pin, callback) {
     gpio.read(pin, function(err, value) {
       if (err){
         console.log('Error reading sensor: ', err);
-	callback();
+	callback(err);
 	}
       else {
-	translate(value);
+	//translate(value);
 	callback(null, {'data':value});
 	}//else
     });
