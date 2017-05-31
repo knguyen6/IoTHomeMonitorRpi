@@ -29,8 +29,18 @@ Device.on('connect', (err, data) => {
   // read temp sensor on GPIO 17
   // temperature.temperatureSensor(pins.temperature['gpio'], pins.temperature['sensorType']);
 
-  // let pirSensor = new gpio(pins.motion['gpio'], 'in', 'both');
-  // pirSensor.watch(rPiController['onCameraDetect']);
+  let pirSensor = new gpio(pins.motion['gpio'], 'in', 'both');
+  pirSensor.watch((err, value) => {
+    if (err) {
+      console.log('PIR motion sensor encountered error');
+      throw err;
+    }
+
+    console.log('PIR motion sensor running...');
+    if (value) {
+      console.log('PIR motion detected a movement');
+    }
+  });
 
   return console.log('attempted to publish');
 });
