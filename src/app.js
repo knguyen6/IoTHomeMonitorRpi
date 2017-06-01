@@ -10,7 +10,6 @@ const rPiController = require('./controller');
 /* Instantiate device and pin settings */
 const Device = IoT.device(require('./credentials'));
 const pins = require('./pins'); // ex) PINS.motion['gpio']
-const rPiController = require('./controller');
 
 Device.on('connect', (err, data) => {
   if (err) throw err;
