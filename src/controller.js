@@ -17,6 +17,7 @@ var isBuzzerOn = false;
 
 
 //watch for motion sensor, if detect movement, turn on buzzer for a bit
+//No need to publish to SNS, i think the camera function already does that.
 function onDetectMotion(err, data){
 	if (err) {
     		console.log('onDetectMotion() error: ', err);
@@ -32,21 +33,22 @@ function onDetectMotion(err, data){
 
 //when the door open, turn on the buzzer if it's not already on. After door close
 // keep buzzing for a while then turn off
-function onMagneticDoorOpen(err, data) { 
+function onMagneticDoorOpen(iotDeviceModule){
+  return function(err, data) { 
     if (err) console.log('onMagneticDoorOpen() err: ', err);
     else {
 	if (data.data && !isBuzzerOn ){
 	    buzzer.buzzerOn();
 	    isBuzzerOn = true;
-	    console.log("========================= if ", data.data, isBuzzerOn);
+	    iotDeviceModule.publish(Utils.messageTopic, "Door open !!!");//publish to SNS
 	}
 	else if (!data.data && isBuzzerOn ){
 	    //buzzer.buzzerOff();
 	    setTimeout(function(){ buzzer.buzzerOff(); }, 10000);
 	    isBuzzerOn = false;
-	    console.log("========================== else: ", data.data, isBuzzerOn);
 	}
     }
+  }
 }
 
 
@@ -58,7 +60,8 @@ function onPirMotionSensorDetect(iotDeviceModule) {
 		Utils.ifErrThrow(err, 'PIR motion sensor encountered error!');
 		console.log('PIR motion sensor running...');
 
-		if (value /*&& liveStreamIsOff*/) {
+		if (value && !isBuzzerOn/*&& liveStreamIsOff*/) {
+			buzzer.buzzerOn();// turn on buzzer
 			console.log('PIR motion detected a movement');
 			iotDeviceModule.publish(Utils.messageTopic, `Intruder detected. Live stream can be viewed here: ${Utils.liveStreamUrl}`);
 
@@ -78,7 +81,9 @@ function onPirMotionSensorDetect(iotDeviceModule) {
             S3.putObject(s3Options, (err, s3Data) => {
              Utils.ifErrThrow(err, 'Photo upload to S3 failed!');
              console.log(`Successfully uploaded photo to S3 ${s3Data.ETag}`);
-            });
+
+             setTimeout(function(){ buzzer.buzzerOff(); }, 10000); //turn off buzzer 
+		});
           });
         }
 			});
