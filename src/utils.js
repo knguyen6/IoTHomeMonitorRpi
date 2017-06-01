@@ -2,7 +2,7 @@
 
 const Path = require('path');
 
-const MESSAGE_TOPIC     = 'iot-home-monitor';
+const MESSAGE_TOPIC     = 'iot-home-intruder';
 const S3_BUCKET         = 'tcss-573';
 const LIVE_STREAM_URL   = 'http://ec2-52-34-34-51.us-west-2.compute.amazonaws.com:8081';
 const SOCKET_SERVER_URL = 'http://ec2-52-34-34-51.us-west-2.compute.amazonaws.com:3000';

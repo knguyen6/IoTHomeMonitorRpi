@@ -9,7 +9,6 @@ const Utils	 = require('./utils');
 const Camera = require('./camera');
 const magnetic = require('./magnetic');
 
-
 buzzer.buzzerOff(); //always off
 
 //flag to keep track if buzzer is on or off
@@ -51,10 +50,6 @@ function onMagneticDoorOpen(iotDeviceModule){
   }
 }
 
-
-
-
-
 function onPirMotionSensorDetect(iotDeviceModule) {
 	return function(err, value) {
 		Utils.ifErrThrow(err, 'PIR motion sensor encountered error!');
@@ -79,11 +74,10 @@ function onPirMotionSensorDetect(iotDeviceModule) {
             };
 
             S3.putObject(s3Options, (err, s3Data) => {
-             Utils.ifErrThrow(err, 'Photo upload to S3 failed!');
-             console.log(`Successfully uploaded photo to S3 ${s3Data.ETag}`);
-
-             setTimeout(function(){ buzzer.buzzerOff(); }, 10000); //turn off buzzer 
-		});
+              Utils.ifErrThrow(err, 'Photo upload to S3 failed!');
+              console.log(`Successfully uploaded photo to S3 ${s3Data.ETag}`);
+              setTimeout(function(){ buzzer.buzzerOff(); }, 10000); //turn off buzzer 
+		        });
           });
         }
 			});
@@ -91,8 +85,20 @@ function onPirMotionSensorDetect(iotDeviceModule) {
 	}
 }
 
+function onStreamInvocation(Socket) {
+  return function(flag) {
+    if (flag === 'true') {
+      Camera['stream'].start(Socket);
+    } else {
+      Camera['stream'].stop();
+      console.log('CAMERA STREAM STOPPED');
+    }
+  }
+}
+
 module.exports = {
 	onPirMotionSensorDetect: onPirMotionSensorDetect,
 	onDetectMotion: onDetectMotion,
-	onMagneticDoorOpen: onMagneticDoorOpen
+	onMagneticDoorOpen: onMagneticDoorOpen,
+  onStreamInvocation: onStreamInvocation
 };

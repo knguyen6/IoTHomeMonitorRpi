@@ -39,32 +39,33 @@ const s3Photo = new RaspiCam({
 	verbose: true
 });
 
-function startStream() {
-	const Socket = io(Utils.socketServerUrl, { reconnection: true });
-	Socket.on('connect', () => {
-	  console.log('Raspberry PI successfully connected to Socket server. Ready to start streaming...');
+function startStream(Socket) {
+  console.log('Raspberry PI successfully connected to Socket server. Ready to start streaming...');
 
-	  liveStreamPhoto.start();
-	  liveStreamPhoto.on('read', (err, timestamp) => {
-	    if (err) throw err;
+  liveStreamPhoto.start();
+  liveStreamPhoto.on('read', (err, timestamp) => {
+    if (err) throw err;
 
-	    let imageLocation = liveStreamPhoto.get('output');
-	    console.log('=======> Photo taken');
-	    console.log('=======> imageLocation:', imageLocation);
-	    fs.readFile(imageLocation, (err, imageStream) => {
-	      if (err) throw err;
-	      console.log('=======> Successfully read image file, emitting stream...');
-	      Socket.emit(Utils.messageTopic, imageStream.toString('base64'));
-	    });
-	  });
-	});
+    let imageLocation = liveStreamPhoto.get('output');
+    console.log('=======> Photo taken');
+    console.log('=======> imageLocation:', imageLocation);
+    fs.readFile(imageLocation, (err, imageStream) => {
+      if (err) throw err;
+      console.log('=======> Successfully read image file, emitting stream...');
+      Socket.emit(Utils.messageTopic, imageStream.toString('base64'));
+    });
+  });
+}
+
+function stopStream() {
+	liveStreamPhoto.stop();
 }
 
 module.exports = {
 	video: video,
-	liveStreamPhoto: liveStreamPhoto,
 	s3Photo: s3Photo,
 	stream: {
-		start: startStream
+		start: startStream,
+		stop: stopStream
 	}
 };
