@@ -3,11 +3,9 @@
 		"gpio": 18
 	},
 	"buzzer": {
-		"pin": 15,
 		"gpio": 22
 	},
 	"magnetic": {
-		"pin": 16,
 		"gpio": 23
 	},
 	"temperature": {
