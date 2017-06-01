@@ -11,14 +11,16 @@ const rPiController = require('./controller');
 const Device = IoT.device(require('./credentials'));
 const pins = require('./pins'); // ex) PINS.motion['gpio']
 
-Device.on('connect', (err, data) => {
-  if (err) throw err;
-  console.log('iot-home-monitor successfully connected to AWS IoT Device Gateway');
+//Device.on('connect', (err, data) => {
+  //if (err) throw err;
+  //console.log('iot-home-monitor successfully connected to AWS IoT Device Gateway');
 
   /********************Application logic********************/
-  // magnetic.magneticSensorCollector(pins['magnetic'].gpio);
+  // magnetic.magneticSensorCollector(pins['magnetic'].gpio, rPiController.onMagneticDoorOpen);
 
-  // let pirSensor = new gpio(pins.motion['gpio'], 'in', 'both');
-  // pirSensor.watch(rPiController.onPirMotionSensorDetect(Device));
+    let pirSensor = new gpio(pins.motion['gpio'], 'in', 'both');
+    //pirSensor.watch(rPiController.onPirMotionSensorDetect(Device));
+    pirSensor.watch(rPiController.onDetectMotion)
+   
 
-});
+//});

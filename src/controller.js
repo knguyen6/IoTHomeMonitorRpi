@@ -7,22 +7,51 @@ const S3 	= new Aws.S3();
 const buzzer = require('./buzzer');
 const Utils	 = require('./utils');
 const Camera = require('./camera');
+const magnetic = require('./magnetic');
+
 
 buzzer.buzzerOff(); //always off
 
-function detectMotion(err, data){
+//flag to keep track if buzzer is on or off
+var isBuzzerOn = false;
+
+
+//watch for motion sensor, if detect movement, turn on buzzer for a bit
+function onDetectMotion(err, data){
 	if (err) {
-    console.log('Unable to collect data from motion sensor: ', err);
+    		console.log('onDetectMotion() error: ', err);
 	} else {
-   	if (data) {
-			console.log('------- motion detected ------->', data);
+   	if (data && !isBuzzerOn) {
+	    console.log('------- motion detected ------->', data);
 	    buzzer.buzzerOn();
-	    //TODO: right now, wait after 10s then turn off buzzer
-	    //TODO: implement turning off by user
 	    setTimeout(function(){ buzzer.buzzerOff(); }, 10000);
 		}
 	}
 }
+
+
+//when the door open, turn on the buzzer if it's not already on. After door close
+// keep buzzing for a while then turn off
+function onMagneticDoorOpen(err, data) { 
+    if (err) console.log('onMagneticDoorOpen() err: ', err);
+    else {
+	if (data.data && !isBuzzerOn ){
+	    buzzer.buzzerOn();
+	    isBuzzerOn = true;
+	    console.log("========================= if ", data.data, isBuzzerOn);
+	}
+	else if (!data.data && isBuzzerOn ){
+	    //buzzer.buzzerOff();
+	    setTimeout(function(){ buzzer.buzzerOff(); }, 10000);
+	    isBuzzerOn = false;
+	    console.log("========================== else: ", data.data, isBuzzerOn);
+	}
+    }
+}
+
+
+
+
 
 function onPirMotionSensorDetect(iotDeviceModule) {
 	return function(err, value) {
@@ -59,5 +88,6 @@ function onPirMotionSensorDetect(iotDeviceModule) {
 
 module.exports = {
 	onPirMotionSensorDetect: onPirMotionSensorDetect,
-	detectMotion: detectMotion
+	onDetectMotion: onDetectMotion,
+	onMagneticDoorOpen: onMagneticDoorOpen
 };

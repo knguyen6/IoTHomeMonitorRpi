@@ -5,7 +5,7 @@ exports.readInput = function(pin, callback) {
   return function() {
     gpio.read(pin, function(err, value) {
       if (err){
-        console.log('Error reading sensor: ', err);
+        console.log('Error reading magnetic sensor: ', err);
 	callback(err);
 	}
       else {
