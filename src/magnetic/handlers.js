@@ -1,5 +1,6 @@
-const gpio = require('rpi-gpio');
 
+const gpio = require('rpi-gpio');
+//code with cb
 exports.readInput = function(pin, callback) {
   return function() {
     gpio.read(pin, function(err, value) {
@@ -8,7 +9,7 @@ exports.readInput = function(pin, callback) {
 	callback(err);
 	}
       else {
-	//translate(value);
+	translate(value);
 	callback(null, {'data':value});
 	}//else
     });
@@ -23,3 +24,5 @@ function translate(value){
     else console.log('Door Close, sensor value = ', value);
 
 }
+
+
