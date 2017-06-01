@@ -6,7 +6,7 @@ const Spawn 		= require('child_process').spawn;
 const fs 	  		= require('fs');
 
 const Handlers 	= require('./handlers');
-const Utils 		= require('./utils');
+const Utils 		= require('../utils');
 
 const video = new RaspiCam({
   mode: 'video',
@@ -19,7 +19,7 @@ video.on('started', Handlers.onStart);
 video.on('stop', Handlers.onStop);
 video.on('read', Handlers.onRead);
 
-const photo = new RaspiCam({
+const liveStreamPhoto = new RaspiCam({
 	mode: 'photo',
 	output: Utils.fileOutput('image-stream.png'),
 	width: 640,
@@ -29,26 +29,32 @@ const photo = new RaspiCam({
 	verbose: true
 });
 
-// TODO Change this URL to the EC2 server
-const SOCKET_SERVER_URL 	= 'http://ec2-52-34-34-51.us-west-2.compute.amazonaws.com:3000/';
-const MESSAGE_TOPIC 			= 'iot-home-intruder';
+const s3Photo = new RaspiCam({
+	mode: 'photo',
+	output: Utils.fileOutput('intruder-detected%04d.png'),
+	width: 640,
+	height: 480,
+	timeout: 10000, // 10s
+	timelapse: 2000, // 2s
+	verbose: true
+});
 
 function startStream() {
-	const Socket = io(SOCKET_SERVER_URL, { reconnection: true });
+	const Socket = io(Utils.socketServerUrl, { reconnection: true });
 	Socket.on('connect', () => {
 	  console.log('Raspberry PI successfully connected to Socket server. Ready to start streaming...');
 
-	  photo.start();
-	  photo.on('read', (err, timestamp) => {
+	  liveStreamPhoto.start();
+	  liveStreamPhoto.on('read', (err, timestamp) => {
 	    if (err) throw err;
 
-	    let imageLocation = photo.get('output');
+	    let imageLocation = liveStreamPhoto.get('output');
 	    console.log('=======> Photo taken');
 	    console.log('=======> imageLocation:', imageLocation);
 	    fs.readFile(imageLocation, (err, imageStream) => {
 	      if (err) throw err;
 	      console.log('=======> Successfully read image file, emitting stream...');
-	      Socket.emit(MESSAGE_TOPIC, imageStream.toString('base64'));
+	      Socket.emit(Utils.messageTopic, imageStream.toString('base64'));
 	    });
 	  });
 	});
@@ -56,7 +62,8 @@ function startStream() {
 
 module.exports = {
 	video: video,
-	photo: photo,
+	liveStreamPhoto: liveStreamPhoto,
+	s3Photo: s3Photo,
 	stream: {
 		start: startStream
 	}
